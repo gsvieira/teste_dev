@@ -12,7 +12,11 @@
     </div>
 
     <div class="card-footer">
-        <a href="{{ route('users.index') }}" class="btn btn-secondary">Back</a>
-        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Edit</a>
+        <a href="{{ route('users.index') }}" class="btn btn-secondary">Voltar</a>
+        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">Editar</a>
+        <a href="{{ route('users.courses', $user->id) }}" class="btn btn-primary">
+            <i class="fas fa-book"></i> Gerenciar Cursos
+        </a>
+
     </div>
 </div>

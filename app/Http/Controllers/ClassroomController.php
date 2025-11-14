@@ -60,7 +60,7 @@ class ClassroomController extends Controller
         ]);
 
         foreach($request->course_ids as $courseId) {
-            DB::insert('INSERT INTO class_course (class_id, course_id) VALUES (?,?)', [$classId, $courseId]);
+            DB::insert('INSERT INTO classroom_course (class_id, course_id) VALUES (?,?)', [$classId, $courseId]);
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -79,6 +80,23 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('sucess', 'Perfil atualizado!');
     }
+
+    public function editCourses(User $user)
+    {
+        $courses = Course::all();
+
+        return view('users.courses', compact('user', 'courses'));
+    }
+
+    public function updateCourses(Request $request, User $user)
+    {
+        $user->courses()->sync($request->courses ?? []);
+
+        return redirect()
+            ->route('users.show', $user->id)
+            ->with('success', 'Cursos do usuário atualizados com sucesso!');
+    }
+
 
     public function destroy($id)
     {

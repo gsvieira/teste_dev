@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RolesTableSeeder::class,
+            AdminUserSeeder::class,
         ]);
         /* User: :factory()->create([
             'name' => 'Test User',

@@ -22,3 +22,15 @@ Route::post('/classes/{id}/courses', [ClassroomController::class, 'attachToCours
 
 Route::resource('courses', CourseController::class);
 Route::resource('users', UserController::class);
+
+Route::get('courses/{course}/classrooms', [CourseController::class, 'editClassrooms'])
+->name('courses.classrooms');
+
+Route::post('courses/{course}/classrooms', [CourseController::class, 'updateClassrooms'])
+->name('courses.classrooms.update');
+
+Route::get('users/{user}/courses', [UserController::class, 'editCourses'])
+    ->name('users.courses');
+
+Route::post('users/{user}/courses', [UserController::class, 'updateCourses'])
+    ->name('users.courses.update');

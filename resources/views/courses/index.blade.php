@@ -7,7 +7,7 @@
 
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">Courses</h3>
+                    <h3 class="card-title">Cursos</h3>
                     <a href="{{ route('courses.create') }}" class="btn btn-success">
                         <i class="fas fa-plus"></i> Create Course
                     </a>
@@ -18,9 +18,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Actions</th>
+                                <th>Nome</th>
+                                <th>Descrição</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,8 +30,14 @@
                                     <td>{{ $course->name }}</td>
                                     <td>{{ $course->description }}</td>
                                     <td>
-                                        <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-edit"></i> Edit
+                                        <a href="{{ route('courses.show', $course->id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Ver
+                                        </a>
+                                        <a href="{{ route('courses.classrooms', $course->id) }}" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Adicionar Matérias
+                                        </a>
+                                        <a href="{{ route('courses.edit', $course->id) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Editar
                                         </a>
 
                                         <form action="{{ route('courses.destroy', $course->id) }}" method="POST" style="display:inline-block">

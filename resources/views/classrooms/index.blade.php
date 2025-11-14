@@ -26,7 +26,7 @@
             <td>{{ $classroom->name }}</td>
             <td>
                 <a href="{{ route('classrooms.edit', $classroom->id) }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-edit"></i> Edit
+                    <i class="fas fa-edit"></i> Editar
                 </a>
                 <form action="{{ route('classrooms.destroy', $classroom->id) }}" method="POST" style="display:inline">
                     @csrf

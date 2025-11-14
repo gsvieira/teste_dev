@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Classroom extends Model
 {
-    protected $table = 'class_models';
+    protected $table = 'classrooms';
     protected $fillable = ['name', 'schedule'];
 
     public function courses() {
-        return $this->belongsToMany(Course::class, 'class_course', 'class_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'classroom_course', 'classroom_id', 'course_id');
     }
 }

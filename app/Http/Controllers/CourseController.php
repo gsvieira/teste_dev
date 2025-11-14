@@ -41,17 +41,24 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        return view('courses.edit', compact('course'));
+        $course = Course::with('classrooms')->findOrFail($course->id);
+
+        $classrooms = Classroom::all();
+        return view('courses.edit', compact('course, classrooms'));
     }
 
     public function update(Request $request, string $id)
     {
+        $course = Course::findOrFail($id);
+
         $request->validate([
             'name' => 'required | string | max:255',
             'description' => 'nullable | string',
+            'classroom' => 'array',
         ]);
-        $course = Course::findOrFail($id);
         $course->update($request->only('name', 'description'));
+
+        $course->classrooms()->sync($request->classrooms ?? []);
 
         return redirect()->route('courses.index')->with('sucess', 'Curso atualizado!');
     }
@@ -63,9 +70,10 @@ class CourseController extends Controller
 
         return redirect()->route('courses.index')->with('sucess', 'Curso deletado com sucesso');
     }
-
+ 
     public function editClassrooms(Course $course)
     {
+        $course = Course::with('classrooms')->findOrFail($course->id);
         $classrooms = Classroom::all();
         return view('courses.classrooms', compact('course', 'classrooms'));
     }
