@@ -8,8 +8,12 @@
         </a>
     </div>
 
+    <div class="mb-3">
+        <input type="text" id="user-search" class="form-control" placeholder="Buscar por nome, email ou matéria">
+    </div>
+
     <div class="card-body p-0">
-        <table class="table table-striped">
+        <table class="table table-striped" id="users-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -22,37 +26,29 @@
             </thead>
 
             <tbody>
-                @foreach($users as $user)
-                    <tr>
-                        <td>{{ $user->id }}</td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td>{{ $user->role->name ?? '-' }}</td>
-                        <td>{{ $user->birthday ? $user->birthday->format('d/m/Y') : '-' }}</td>
-
-                        <td>
-                            <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-sm">
-                                <i class="fas fa-eye"></i>
-                                <span>Ver</span>
-                            </a>
-
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">
-                                <i class="fas fa-edit"></i>
-                                <span>Editar</span>
-                            </a>
-
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf @method('DELETE')
-                                <button onclick="return confirm('Excluir esse usuário?')" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                    <span>Excluir</span>
-                                </button>
-                            </form>
-                        </td>
-
-                    </tr>
-                @endforeach
+                @include('users.partials.users_table', ['users' => $users])
             </tbody>
         </table>
     </div>
 </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#user-search').on('keyup', function() {
+        let query = $(this).val();
+
+        $.ajax({
+            url: "{{ route('users.index') }}",
+            type: "GET",
+            data: { search: query },
+            success: function(data) {
+                console.log(data);
+                $('#users-table tbody').html(data);
+            }
+        });
+    });
+});
+</script>
+

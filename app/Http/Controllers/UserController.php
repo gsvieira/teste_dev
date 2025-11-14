@@ -12,13 +12,24 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with('role');
+        $search = $request->get('search');
 
-        if($role = $request->get('role')) {
-            $query->whereHas('role', fn($q) => $q->where('name', 'role'));
+        $usersQuery = User::with('role', 'courses.classrooms');
+
+        if ($search) {
+            $usersQuery->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('courses.classrooms', fn($q) => 
+                        $q->where('name', 'like', "%{$search}%")
+                    );
         }
 
-        $users = $query->get();
+        $users = $usersQuery->get();
+
+        if ($request->ajax()) {
+            return view('users.partials.users_table', compact('users'))->render();
+        }
+
         return view('users.index', compact('users'));
     }
 
