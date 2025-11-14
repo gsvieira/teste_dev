@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\Classroom;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -23,21 +24,22 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required | string | max:255',
-            'description' => 'nullable | string',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
-        Course::create($request_only('name', 'description'));
+        Course::create($request->only('name', 'description'));
 
         return redirect()->route('courses.index')->with('sucess', 'Course created');
     }
 
-    public function show(string $id)
+    public function show($id)
     {
+        $course = Course::findOrFail($id);
         return view('courses.show', compact('course'));
     }
 
-    public function edit(string $id)
+    public function edit(Course $course)
     {
         return view('courses.edit', compact('course'));
     }
@@ -48,8 +50,8 @@ class CourseController extends Controller
             'name' => 'required | string | max:255',
             'description' => 'nullable | string',
         ]);
-
-        Course::update($request->only('name', 'description'));
+        $course = Course::findOrFail($id);
+        $course->update($request->only('name', 'description'));
 
         return redirect()->route('courses.index')->with('sucess', 'Curso atualizado!');
     }
@@ -61,5 +63,19 @@ class CourseController extends Controller
 
         return redirect()->route('courses.index')->with('sucess', 'Curso deletado com sucesso');
     }
-    
+
+    public function editClassrooms(Course $course)
+    {
+        $classrooms = Classroom::all();
+        return view('courses.classrooms', compact('course', 'classrooms'));
+    }
+
+    public function updateClassrooms(Request $request, Course $course)
+    {
+        $course->classrooms()->sync($request->classrooms ?? []);
+
+        return redirect()
+            ->route('courses.show', $course->id)
+            ->with('success', 'Salas atualizadas com sucesso!');
+    }    
 }

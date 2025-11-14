@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -44,23 +46,45 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Usuário criado com sucesso');
     }
 
-    public function show(string $id)
+    public function show($id)
     {
-        
+        $user = User::findOrFail($id);
+        return view('users.show', compact('user'));   
     }
 
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $roles = Role::All();
+        return view('users.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'nullable|min:8|confirmed',
+            'role_id' => 'string',
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'role_id' => $request->role_id,
+        ];
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users.index')->with('sucess', 'Perfil atualizado!');
     }
 
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $user = User::FindorFail($id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('sucess', 'Perfil deletado com sucesso');
     }
 }

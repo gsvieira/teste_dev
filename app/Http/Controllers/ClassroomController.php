@@ -9,25 +9,34 @@ use Illuminate\Support\Facades\DB;
 class ClassroomController extends Controller
 {
     public function index() {
-        $classroom = DB::select('SELECT * from classroom');
-        return view('classroom.index', compact('classroom'));
+        $classrooms = DB::select('SELECT * from classrooms');
+        return view('classrooms.index', compact('classrooms'));
+    }
+
+    public function create() {
+        return view('classrooms.create');
     }
 
     public function show($id) {
-        $class = DB::select('SELECT * from classroom WHERE id = ?', [$id]);
-        return view('classroom.show', ['class' => $class[0]]);
+        $classroom = DB::select('SELECT * from classrooms WHERE id = ?', [$id]);
+        return view('classrooms.show', ['classroom' => $classroom[0]]);
+    }
+
+    public function edit($id) {
+        $classroom = DB::select('SELECT * from classrooms WHERE id = ?', [$id]);
+        return view('classrooms.edit', ['classroom' => $classroom[0]]);
     }
 
     public function store(Request $request) {
         $request->validate([
             'name'=> 'required | string | max:255',
-            'schedule' => 'nullable| string',
+            'schedule' => 'nullable | date',
         ]);
-        DB::insert('INSERT INTO classroom (name, schedule) VALUES (?)', [
+        DB::insert('INSERT INTO classrooms (name, schedule) VALUES (?, ?)', [
             $request->name,
             $request->schedule
         ]);
-        return redirect()->route('classroom.index');
+        return redirect()->route('classrooms.index');
     }
 
     public function update(Request $request, $id) {
@@ -35,13 +44,13 @@ class ClassroomController extends Controller
             'name' => 'required | string | max:255',
             'schedule' => 'nullable | string'
         ]);
-        DB::update('UPDATE classroom SET name = ?, schedule = ? WHERE id = ?', [
+        DB::update('UPDATE classrooms SET name = ?, schedule = ? WHERE id = ?', [
             $request->name,
             $request->schedule,
             $id
         ]);
 
-        return redirect()->route('classroom.index');
+        return redirect()->route('classrooms.index');
     }
 
     public function attachToCourse(Request $request, $class_id) {
@@ -56,7 +65,7 @@ class ClassroomController extends Controller
     }
 
     public function delete($id) {
-        DB::delete('DELETE FROM classroom WHERE id = ?', [$id]);
+        DB::delete('DELETE FROM classrooms WHERE id = ?', [$id]);
     }
 
 }
