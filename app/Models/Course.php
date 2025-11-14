@@ -13,6 +13,6 @@ class Course extends Model
     }
 
     public function classes() {
-        return $this->belongsToMany(ClassModel::class, 'class_course', 'course_id', 'class_id');
+        return $this->belongsToMany(Classroom::class, 'class_course', 'course_id', 'class_id');
     }
 }
