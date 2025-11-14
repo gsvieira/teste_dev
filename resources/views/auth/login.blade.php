@@ -11,13 +11,13 @@
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Acesse sua conta</p>
-            <form method="POST" action="login">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email" />
+                    <input type="email" name="email" class="form-control" placeholder="Email" />
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password" />
+                    <input type="password" name="password" class="form-control" placeholder="Password" />
                 </div>
 
                 <div class="d-grid gap-2">

@@ -22,7 +22,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required | email | unique:users',
-            'password' => 'required | min:8 | confirmed',
+            'password' => 'required | min:6',
         ]);
 
         $user = User::create([
@@ -30,21 +30,21 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
         Auth::login($user);
-        return redirect('/dashboard');
+        return redirect()->route('users.index');
     }
-
+    
     public function login(Request $request) {
         $credentials = $request->validate([
             'email'=> 'required | email',
             'password' => 'required',
         ]);
-
+        
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect('/dashboard');
+            return redirect()->route('users.index');
         }
+        
 
         return back()->withErrors(['email' => 'invalid credentials.']);
     }
