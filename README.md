@@ -82,3 +82,21 @@ Docker - Ambiente APACHE + PHP X: https://hub.docker.com/_/php
 SQL Server Execute Online -  https://www.jdoodle.com/execute-sql-online/
 
 #Em caso de dúvidas, envie-nos um e-mail para rodolforomao@gmail.com
+
+
+
+Instruções de operação.
+É necessário o uso do banco de dados SQL server, no meu caso executei via docker
+
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Pass#967" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2025-latest
+
+além disso é necessário executar composer install para instalar o as dependencias do laravel 12.x
+seguido de npm install
+
+após isso deve ser feito a migration com seed com o comando 
+php artisan migrate --seed
+e depois servir a aplicação.
+
+
+
+
